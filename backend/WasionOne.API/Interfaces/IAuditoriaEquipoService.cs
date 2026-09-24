@@ -1,4 +1,5 @@
 using WasionOne.API.DTOs;
+using WasionOne.API.Helpers;
 
 namespace WasionOne.API.Interfaces;
 
@@ -12,5 +13,11 @@ public interface IAuditoriaEquipoService
 
     Task<AuditoriaEquipoDto?> ActualizarAuditoriaAsync(int id, AuditoriaEquipoActualizarDto dto);
 
-    Task<AuditoriaEquipoImportarResultadoDto> ImportarDesdeExcelAsync(Stream archivoExcel);
+    Task<AuditoriaEquipoImportarResultadoDto> ImportarDesdeExcelAsync(Stream archivoExcel, IReadOnlySet<int>? plantasPermitidas);
+
+    // Plantilla descargable de Excel (24/sep/2026) — mismas columnas que
+    // espera ImportarDesdeExcelAsync, con una fila de ejemplo.
+    IReadOnlyList<ExcelPlantillaUtils.ColumnaPlantilla> ObtenerColumnasPlantilla();
+
+    byte[] GenerarPlantillaExcel();
 }

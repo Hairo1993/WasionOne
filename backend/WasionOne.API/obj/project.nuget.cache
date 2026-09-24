@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xim9dFkvSfU=",
+  "dgSpecHash": "5jsEBdiwKs0=",
   "success": true,
-  "projectFilePath": "C:\\Development\\Projects\\WasionOne\\backend\\WasionOne.API\\WasionOne.API.csproj",
+  "projectFilePath": "C:\\Development\\Projects\\WasionOne\\backend\\wasionone.APi\\WasionOne.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\IA\\.nuget\\packages\\azure.core\\1.50.0\\azure.core.1.50.0.nupkg.sha512",
     "C:\\Users\\IA\\.nuget\\packages\\azure.identity\\1.17.1\\azure.identity.1.17.1.nupkg.sha512",

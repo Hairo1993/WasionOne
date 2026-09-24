@@ -22,11 +22,31 @@ public class PlaticaService : IPlaticaService
         ["MedioDifusion"] = "mediodedifusion",
     };
 
+    // Plantilla descargable (24/sep/2026): mismo orden y mismos campos que
+    // "Columnas" de arriba, con el encabezado "bonito" y un valor de
+    // ejemplo por columna.
+    private static readonly IReadOnlyList<ExcelPlantillaUtils.ColumnaPlantilla> PlantillaColumnas = new List<ExcelPlantillaUtils.ColumnaPlantilla>
+    {
+        new("ID", "PLAT-0001"),
+        new("Fecha de Envío", "24/09/2026"),
+        new("Tema de la Política", "Uso seguro de contraseñas"),
+        new("Responsable de Envío", "Ana García"),
+        new("Medio de Difusión", "Correo electrónico"),
+    };
+
     private readonly ApplicationDbContext _contexto;
 
     public PlaticaService(ApplicationDbContext contexto)
     {
         _contexto = contexto;
+    }
+
+    public IReadOnlyList<ExcelPlantillaUtils.ColumnaPlantilla> ObtenerColumnasPlantilla() => PlantillaColumnas;
+
+    public byte[] GenerarPlantillaExcel()
+    {
+        using var libro = ExcelPlantillaUtils.GenerarLibro("IT Pláticas", PlantillaColumnas);
+        return ExcelPlantillaUtils.GuardarComoBytes(libro);
     }
 
     public async Task<IEnumerable<PlaticaDto>> ObtenerPlaticasAsync(int? areaUbicacionId)
@@ -109,9 +129,15 @@ public class PlaticaService : IPlaticaService
         return MapearDto(platica);
     }
 
-    public async Task<PlaticaImportarResultadoDto> ImportarDesdeExcelAsync(Stream archivoExcel)
+    public async Task<PlaticaImportarResultadoDto> ImportarDesdeExcelAsync(Stream archivoExcel, IReadOnlySet<int>? plantasPermitidas)
     {
         var resultado = new PlaticaImportarResultadoDto();
+
+        if (plantasPermitidas is not null)
+        {
+            resultado.Errores.Add("Este módulo no maneja Plantas específicas (aplica a toda la empresa); un usuario con captura restringida por Planta no puede importar aquí. Quita la restricción de Planta para este módulo si necesitas que esta persona importe.");
+            return resultado;
+        }
 
         using var libro = new XLWorkbook(archivoExcel);
         var hoja = libro.Worksheets.First();

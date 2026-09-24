@@ -104,7 +104,7 @@ public class TicketActualizarDto
 }
 
 // Resultado de una importación masiva desde Excel.
-public class TicketImportarResultadoDto
+public class TicketImportarResultadoDto : IResultadoImportacion
 {
     public int TotalFilas { get; set; }
     public int Creados { get; set; }

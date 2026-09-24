@@ -25,6 +25,36 @@ builder.Services.AddScoped<IIncidenteCriticoService, IncidenteCriticoService>();
 builder.Services.AddScoped<IRespaldoService, RespaldoService>();
 builder.Services.AddScoped<IPlaticaService, PlaticaService>();
 builder.Services.AddScoped<IAuditoriaEquipoService, AuditoriaEquipoService>();
+builder.Services.AddScoped<IDisponibilidadServidorService, DisponibilidadServidorService>();
+builder.Services.AddScoped<IDisponibilidadRedService, DisponibilidadRedService>();
+builder.Services.AddScoped<IAlmacenamientoServidorService, AlmacenamientoServidorService>();
+builder.Services.AddScoped<IRecorridoService, RecorridoService>();
+builder.Services.AddScoped<ICredencializacionService, CredencializacionService>();
+builder.Services.AddScoped<ITestConsignaService, TestConsignaService>();
+builder.Services.AddScoped<IAlcoholimetriaService, AlcoholimetriaService>();
+builder.Services.AddScoped<IDopingService, DopingService>();
+builder.Services.AddScoped<ILockerService, LockerService>();
+builder.Services.AddScoped<IValeSalidaService, ValeSalidaService>();
+builder.Services.AddScoped<IEstacionamientoService, EstacionamientoService>();
+builder.Services.AddScoped<IReunionProveedorService, ReunionProveedorService>();
+builder.Services.AddScoped<IEvaluacionVigilanciaService, EvaluacionVigilanciaService>();
+builder.Services.AddScoped<IActualizacionEquipoCriticoService, ActualizacionEquipoCriticoService>();
+builder.Services.AddScoped<IMantenimientoVehicularService, MantenimientoVehicularService>();
+builder.Services.AddScoped<ITiempoRespuestaResolucionService, TiempoRespuestaResolucionService>();
+builder.Services.AddScoped<IDisponibilidadAbastecimientoService, DisponibilidadAbastecimientoService>();
+builder.Services.AddScoped<ICumplimientoDocumentacionService, CumplimientoDocumentacionService>();
+builder.Services.AddScoped<ICumplimientoProgramaService, CumplimientoProgramaService>();
+builder.Services.AddScoped<IObservacionSeguridadService, ObservacionSeguridadService>();
+builder.Services.AddScoped<ISafetyWalkService, SafetyWalkService>();
+builder.Services.AddScoped<IAccidenteTrabajoService, AccidenteTrabajoService>();
+builder.Services.AddScoped<ICumplimientoEppService, CumplimientoEppService>();
+builder.Services.AddScoped<IEstatusLegalPlantaService, EstatusLegalPlantaService>();
+builder.Services.AddScoped<IEvaluacionProveedorSegHigieneService, EvaluacionProveedorSegHigieneService>();
+builder.Services.AddScoped<IBrigadaService, BrigadaService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
+// Importación masiva combinada (24/sep/2026) — agrega, sin duplicar su
+// lógica, todos los I*Service de arriba que ya soportan importación.
+builder.Services.AddScoped<IImportacionMasivaService, ImportacionMasivaService>();
 
 var jwtConfig = builder.Configuration.GetSection("Jwt");
 var claveSecreta = jwtConfig["ClaveSecreta"]!;

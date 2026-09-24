@@ -33,7 +33,7 @@ public class PlaticaActualizarDto
     public string? MedioDifusion { get; set; }
 }
 
-public class PlaticaImportarResultadoDto
+public class PlaticaImportarResultadoDto : IResultadoImportacion
 {
     public int TotalFilas { get; set; }
     public int Creados { get; set; }

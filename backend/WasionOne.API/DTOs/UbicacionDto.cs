@@ -10,3 +10,8 @@ public class UbicacionCrearDto
 {
     public string Nombre { get; set; } = string.Empty;
 }
+
+public class UbicacionActualizarDto
+{
+    public string Nombre { get; set; } = string.Empty;
+}

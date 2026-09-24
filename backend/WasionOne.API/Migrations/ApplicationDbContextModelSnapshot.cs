@@ -22,6 +22,261 @@ namespace WasionOne.API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("WasionOne.API.Models.AccidenteTrabajo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("AccidenteConDiasIncapacidad")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Area")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CausaRaiz")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Compania")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("Dias")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EstatusAccion1")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("EstatusAccion2")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaOcurrido")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaReporte")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Folio")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Lesion")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("ParteLesionada")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("TipoIncidenteAccidente")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("Folio")
+                        .IsUnique();
+
+                    b.ToTable("AccidenteTrabajo", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.ActualizacionEquipoCritico", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Codigo")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaRegistro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Observaciones")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Responsable")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<bool>("SeAplico")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("TeniaActualizacion")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("Codigo", "FechaRegistro")
+                        .IsUnique();
+
+                    b.ToTable("ActualizacionEquipoCritico", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.Alcoholimetria", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Negativo")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Positivo")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Turno")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId", "Fecha", "Turno")
+                        .IsUnique();
+
+                    b.ToTable("Alcoholimetria", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.AlmacenamientoServidor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("AlmacenamientoUtilizadoPorcentaje")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("CapacidadTotalGb")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal?>("EspacioDisponibleGb")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal?>("EspacioUtilizadoGb")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("Hora")
+                        .HasColumnType("time");
+
+                    b.Property<string>("IdOrigen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Ip")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Observaciones")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Responsable")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Servidor")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<decimal?>("Umbral")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("Unidad")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("IdOrigen")
+                        .IsUnique()
+                        .HasFilter("[IdOrigen] IS NOT NULL");
+
+                    b.ToTable("AlmacenamientoServidor", (string)null);
+                });
+
             modelBuilder.Entity("WasionOne.API.Models.Area", b =>
                 {
                     b.Property<int>("Id")
@@ -212,6 +467,351 @@ namespace WasionOne.API.Migrations
                     b.ToTable("AuditoriaEquipo", (string)null);
                 });
 
+            modelBuilder.Entity("WasionOne.API.Models.Brigada", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaUltimaCapacitacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Folio")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("NombreBrigadista")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Observaciones")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("PuestoBrigada")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("TipoBrigada")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("Folio")
+                        .IsUnique();
+
+                    b.ToTable("Brigada", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.Credencializacion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AreaDeTrabajo")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Empresa")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime?>("FechaHoraEntrada")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaHoraSalida")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdOrigen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Identificacion")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("MotivoVisita")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<string>("NombreCompleto")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("PersonaQueVisita")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("TipoAcceso")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("IdOrigen")
+                        .IsUnique()
+                        .HasFilter("[IdOrigen] IS NOT NULL");
+
+                    b.ToTable("Credencializacion", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.CumplimientoDocumentacion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("AprobadoLeninLi")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Area")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Carpeta")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Estatus")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaVencimiento")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("FirmaDireccion")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FirmaFinanzas")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("FirmaLegal")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Firmado")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Moneda")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<decimal?>("MontoIvaIncluido")
+                        .HasColumnType("decimal(14,2)");
+
+                    b.Property<string>("Proveedor")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Renovacion")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Responsable")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("TipoContrato")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.ToTable("CumplimientoDocumentacion", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.CumplimientoEpp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AbastecimientoStock")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<int?>("Existencias")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaRegistro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdEpp")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int?>("Maximo")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Minimo")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("Solicitud")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Talla")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Unidad")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("VidaUtilCantidad")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VidaUtilUnidad")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("IdEpp", "FechaRegistro")
+                        .IsUnique();
+
+                    b.ToTable("CumplimientoEpp", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.CumplimientoPrograma", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AreaEvaluada")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("CumplimientoGeneralPorcentaje")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("Estatus")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("FechaCierre")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaReporte")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Hallazgo")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<int?>("IdOrigen")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Prioridad")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Responsable")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Seguimiento")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Tipo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("IdOrigen")
+                        .IsUnique()
+                        .HasFilter("[IdOrigen] IS NOT NULL");
+
+                    b.ToTable("CumplimientoPrograma", (string)null);
+                });
+
             modelBuilder.Entity("WasionOne.API.Models.Departamento", b =>
                 {
                     b.Property<int>("Id")
@@ -277,6 +877,490 @@ namespace WasionOne.API.Migrations
                             Id = 2,
                             Nombre = "Operaciones"
                         });
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.DisponibilidadAbastecimiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("CantidadEntregada")
+                        .HasColumnType("decimal(12,2)");
+
+                    b.Property<string>("Comentarios")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Departamento")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Especificar")
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<DateTime>("FechaEntrega")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Material")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Unidad")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.ToTable("DisponibilidadAbastecimiento", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.DisponibilidadRed", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DisponibilidadPorcentaje")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("Dispositivo")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("Hora")
+                        .HasColumnType("time");
+
+                    b.Property<string>("IdOrigen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Ip")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal?>("LatenciaMs")
+                        .HasColumnType("decimal(9,2)");
+
+                    b.Property<string>("Observaciones")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<decimal?>("PerdidaPaquetesPorcentaje")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("Responsable")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int?>("TiempoCaidaMin")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TipoDispositivo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("IdOrigen")
+                        .IsUnique()
+                        .HasFilter("[IdOrigen] IS NOT NULL");
+
+                    b.ToTable("DisponibilidadRed", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.DisponibilidadServidor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("DisponibilidadPorcentaje")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan>("Hora")
+                        .HasColumnType("time");
+
+                    b.Property<string>("IdOrigen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Ip")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Observaciones")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Responsable")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Servicio")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Servidor")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int?>("TiempoCaidaMin")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TiempoRespuestaMs")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("IdOrigen")
+                        .IsUnique()
+                        .HasFilter("[IdOrigen] IS NOT NULL");
+
+                    b.ToTable("DisponibilidadServidor", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.Doping", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Area")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdOrigen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("NoNomina")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Nombre")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Resultado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<string>("Turno")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("IdOrigen")
+                        .IsUnique()
+                        .HasFilter("[IdOrigen] IS NOT NULL");
+
+                    b.ToTable("Doping", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.Estacionamiento", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Area")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Colaborador")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EstatusDocumentacion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaRegistro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdOrigen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Licencia")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarcaVehiculo1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MarcaVehiculo2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("MultiPlanta")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NoMarbete")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PlacasVehiculo1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PlacasVehiculo2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PlantasAdicionales")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegistradoPor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Seguro")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubmarcaVehiculo1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SubmarcaVehiculo2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TarjetaCirculacion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("VencimientoLicencia")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("VencimientoSeguro")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("NoMarbete")
+                        .IsUnique();
+
+                    b.ToTable("Estacionamiento", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.EstatusLegalPlanta", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Autoridad")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Estatus")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Frecuencia")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("RequerimientoLegal")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<DateTime>("UltimaFechaRealizacion")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId", "RequerimientoLegal", "UltimaFechaRealizacion")
+                        .IsUnique();
+
+                    b.ToTable("EstatusLegalPlanta", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.EvaluacionProveedorSegHigiene", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Cumplimiento")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<string>("Especialidad")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("Kpi")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<DateTime>("Mes")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Proveedor")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("Proveedor", "AreaUbicacionId", "Mes")
+                        .IsUnique();
+
+                    b.ToTable("EvaluacionProveedorSegHigiene", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.EvaluacionVigilancia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal?>("Acuerdos")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("CambiosSolicitados")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal?>("Capacitacion")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal?>("Cobertura")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal?>("Equipamiento")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal?>("Expedientes")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Observaciones")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Procedimientos")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("Proveedor")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal?>("Reuniones")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal?>("Supervision")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal?>("Uniformidad")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId", "Proveedor", "Fecha")
+                        .IsUnique();
+
+                    b.ToTable("EvaluacionVigilancia", (string)null);
                 });
 
             modelBuilder.Entity("WasionOne.API.Models.IncidenteCritico", b =>
@@ -477,6 +1561,188 @@ namespace WasionOne.API.Migrations
                     b.ToTable("InventarioEquipo", (string)null);
                 });
 
+            modelBuilder.Entity("WasionOne.API.Models.Locker", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Detalles")
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime?>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan?>("HoraInicio")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("HoraTermino")
+                        .HasColumnType("time");
+
+                    b.Property<string>("IdOrigen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("NoNomina")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Nombre")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("NumeroLocker")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Resultado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("IdOrigen")
+                        .IsUnique()
+                        .HasFilter("[IdOrigen] IS NOT NULL");
+
+                    b.ToTable("Locker", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.MantenimientoVehicular", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Estatus")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("KilometrajeActual")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("KilometrajeUltimoServicio")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProximoServicio")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VehiculoTipo")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("Vin")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("Vin")
+                        .IsUnique();
+
+                    b.ToTable("MantenimientoVehicular", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.ObservacionSeguridad", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Area")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Categorias")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Empresa")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Folio")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("NNomina")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("PersonaObservada")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Usuario")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("Folio")
+                        .IsUnique();
+
+                    b.ToTable("ObservacionSeguridad", (string)null);
+                });
+
             modelBuilder.Entity("WasionOne.API.Models.Platica", b =>
                 {
                     b.Property<int>("Id")
@@ -520,6 +1786,64 @@ namespace WasionOne.API.Migrations
                         .HasFilter("[IdOrigen] IS NOT NULL");
 
                     b.ToTable("Platica", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.Recorrido", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AreaTipo")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DuracionMinutos")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime?>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Hallazgos")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<TimeSpan?>("HoraFin")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("HoraInicio")
+                        .HasColumnType("time");
+
+                    b.Property<string>("IdOrigen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Operador")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("IdOrigen")
+                        .IsUnique()
+                        .HasFilter("[IdOrigen] IS NOT NULL");
+
+                    b.ToTable("Recorrido", (string)null);
                 });
 
             modelBuilder.Entity("WasionOne.API.Models.Respaldo", b =>
@@ -578,6 +1902,184 @@ namespace WasionOne.API.Migrations
                         .HasFilter("[IdOrigen] IS NOT NULL");
 
                     b.ToTable("Respaldo", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.ReunionProveedor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Asistentes")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AsuntoMotivo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaRegistro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<TimeSpan?>("Hora")
+                        .HasColumnType("time");
+
+                    b.Property<string>("IdOrigen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("MinutaAcuerdos")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Proveedor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegistradoPor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("IdOrigen")
+                        .IsUnique()
+                        .HasFilter("[IdOrigen] IS NOT NULL");
+
+                    b.ToTable("ReunionProveedor", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.SafetyWalk", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Area")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("AsistioCoordinadorCsh")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioGerenteCalidad")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioGerenteCompras")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioGerenteLogistica")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioGerenteProduccion")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioGerenteProyectos")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioGerenteRh")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioGerenteSoporteTecnico")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioSecretario")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioVocal1")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioVocal2")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioVocal3")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioVocal4")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("AsistioVocal5")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("Cumplimiento")
+                        .HasColumnType("decimal(5,2)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("Fecha", "AreaUbicacionId")
+                        .IsUnique();
+
+                    b.ToTable("SafetyWalk", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.TestConsigna", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AreaInvolucrada")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IdOrigen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ProcedimientoInvolucrado")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Proveedor")
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<string>("ResultadoTest")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("IdOrigen")
+                        .IsUnique()
+                        .HasFilter("[IdOrigen] IS NOT NULL");
+
+                    b.ToTable("TestConsigna", (string)null);
                 });
 
             modelBuilder.Entity("WasionOne.API.Models.Ticket", b =>
@@ -751,6 +2253,87 @@ namespace WasionOne.API.Migrations
                     b.ToTable("Ticket", (string)null);
                 });
 
+            modelBuilder.Entity("WasionOne.API.Models.TiempoRespuestaResolucion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool?>("CumplimientoSla")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Estatus")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime?>("FechaCierre")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("FechaRecepcion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Folio")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<TimeSpan?>("HoraCierre")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan?>("HoraRecepcion")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Observaciones")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("Prioridad")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("ResponsableCompras")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<decimal?>("SlaCierreHoras")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("Solicitante")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Solicitud")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<decimal?>("TiempoAtencionDias")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<decimal?>("TiempoAtencionHoras")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("Tipo")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("Folio")
+                        .IsUnique();
+
+                    b.ToTable("TiempoRespuestaResolucion", (string)null);
+                });
+
             modelBuilder.Entity("WasionOne.API.Models.Ubicacion", b =>
                 {
                     b.Property<int>("Id")
@@ -867,8 +2450,182 @@ namespace WasionOne.API.Migrations
                             NombreCompleto = "Administrador General",
                             NombreUsuario = "admin",
                             PasswordHash = "100000.eE4Fsv4smUeDOysC5huSKw==.IyukRhjeKxflKPAplF7FfngTa87nIAZrBQTHXpL313w=",
-                            Rol = "CEO"
+                            Rol = "Superadmin"
                         });
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.UsuarioModulo", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ModuloClave")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId", "ModuloClave")
+                        .IsUnique();
+
+                    b.ToTable("UsuarioModulo", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.UsuarioModuloUbicacion", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModuloClave")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("UsuarioId", "ModuloClave", "AreaUbicacionId")
+                        .IsUnique();
+
+                    b.ToTable("UsuarioModuloUbicacion", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.ValeSalida", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("ActivoFijo")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("AreaUbicacionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ArticulosMateriales")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CerradoPor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ConceptoMotivo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DetalleMotivo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<DateTime?>("FechaEstimadaRetorno")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaImportacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaRealRetorno")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaRegistro")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaSalida")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaVale")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Folio")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("IdOrigen")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Referencia")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RegistradoPor")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Solicitante")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AreaUbicacionId");
+
+                    b.HasIndex("IdOrigen")
+                        .IsUnique()
+                        .HasFilter("[IdOrigen] IS NOT NULL");
+
+                    b.ToTable("ValeSalida", (string)null);
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.AccidenteTrabajo", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.ActualizacionEquipoCritico", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.Alcoholimetria", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.AlmacenamientoServidor", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
                 });
 
             modelBuilder.Entity("WasionOne.API.Models.Area", b =>
@@ -912,6 +2669,61 @@ namespace WasionOne.API.Migrations
                     b.Navigation("AreaUbicacion");
                 });
 
+            modelBuilder.Entity("WasionOne.API.Models.Brigada", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.Credencializacion", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.CumplimientoDocumentacion", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.CumplimientoEpp", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.CumplimientoPrograma", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
             modelBuilder.Entity("WasionOne.API.Models.Departamento", b =>
                 {
                     b.HasOne("WasionOne.API.Models.Direccion", "Direccion")
@@ -921,6 +2733,94 @@ namespace WasionOne.API.Migrations
                         .IsRequired();
 
                     b.Navigation("Direccion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.DisponibilidadAbastecimiento", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.DisponibilidadRed", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.DisponibilidadServidor", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.Doping", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.Estacionamiento", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.EstatusLegalPlanta", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.EvaluacionProveedorSegHigiene", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.EvaluacionVigilancia", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
                 });
 
             modelBuilder.Entity("WasionOne.API.Models.IncidenteCritico", b =>
@@ -952,12 +2852,56 @@ namespace WasionOne.API.Migrations
                     b.Navigation("AreaUbicacion");
                 });
 
+            modelBuilder.Entity("WasionOne.API.Models.Locker", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.MantenimientoVehicular", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.ObservacionSeguridad", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
             modelBuilder.Entity("WasionOne.API.Models.Platica", b =>
                 {
                     b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
                         .WithMany()
                         .HasForeignKey("AreaUbicacionId")
                         .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.Recorrido", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("AreaUbicacion");
                 });
@@ -973,7 +2917,51 @@ namespace WasionOne.API.Migrations
                     b.Navigation("AreaUbicacion");
                 });
 
+            modelBuilder.Entity("WasionOne.API.Models.ReunionProveedor", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.SafetyWalk", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.TestConsigna", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
             modelBuilder.Entity("WasionOne.API.Models.Ticket", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.TiempoRespuestaResolucion", b =>
                 {
                     b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
                         .WithMany()
@@ -1008,6 +2996,47 @@ namespace WasionOne.API.Migrations
                     b.Navigation("Direccion");
                 });
 
+            modelBuilder.Entity("WasionOne.API.Models.UsuarioModulo", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.Usuario", "Usuario")
+                        .WithMany("ModulosAsignados")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.UsuarioModuloUbicacion", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WasionOne.API.Models.Usuario", "Usuario")
+                        .WithMany("ModuloUbicacionesAsignadas")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.ValeSalida", b =>
+                {
+                    b.HasOne("WasionOne.API.Models.AreaUbicacion", "AreaUbicacion")
+                        .WithMany()
+                        .HasForeignKey("AreaUbicacionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("AreaUbicacion");
+                });
+
             modelBuilder.Entity("WasionOne.API.Models.Area", b =>
                 {
                     b.Navigation("AreaUbicaciones");
@@ -1026,6 +3055,13 @@ namespace WasionOne.API.Migrations
             modelBuilder.Entity("WasionOne.API.Models.Ubicacion", b =>
                 {
                     b.Navigation("AreaUbicaciones");
+                });
+
+            modelBuilder.Entity("WasionOne.API.Models.Usuario", b =>
+                {
+                    b.Navigation("ModuloUbicacionesAsignadas");
+
+                    b.Navigation("ModulosAsignados");
                 });
 #pragma warning restore 612, 618
         }

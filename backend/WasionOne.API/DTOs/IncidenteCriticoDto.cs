@@ -59,7 +59,7 @@ public class IncidenteCriticoActualizarDto
     public decimal? DuracionHoras { get; set; }
 }
 
-public class IncidenteCriticoImportarResultadoDto
+public class IncidenteCriticoImportarResultadoDto : IResultadoImportacion
 {
     public int TotalFilas { get; set; }
     public int Creados { get; set; }

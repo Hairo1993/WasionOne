@@ -40,7 +40,7 @@ public class AuditoriaEquipoActualizarDto
     public string Estado { get; set; } = string.Empty;
 }
 
-public class AuditoriaEquipoImportarResultadoDto
+public class AuditoriaEquipoImportarResultadoDto : IResultadoImportacion
 {
     public int TotalFilas { get; set; }
     public int Creados { get; set; }

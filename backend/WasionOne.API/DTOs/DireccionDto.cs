@@ -10,3 +10,8 @@ public class DireccionCrearDto
 {
     public string Nombre { get; set; } = string.Empty;
 }
+
+public class DireccionActualizarDto
+{
+    public string Nombre { get; set; } = string.Empty;
+}

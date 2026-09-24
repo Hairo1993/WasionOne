@@ -5,13 +5,16 @@ using WasionOne.API.Interfaces;
 
 namespace WasionOne.API.Controllers;
 
-// Solo CEO y Director pueden administrar usuarios. Más adelante (cuando se
-// construyan las pantallas de gestión por Sub-área) se podrá afinar esto
-// para permitir que un Responsable de Área/Sub-área gestione usuarios
-// exclusivamente dentro de su propio nodo de la jerarquía.
+// 19/sep/2026: la administración de usuarios pasó a ser exclusiva del rol
+// Superadmin (antes la tenían también CEO y Director). CEO y Director ya
+// no pueden crear/editar usuarios ni cambiar contraseñas.
+//
+// Nota: se usa el literal "Superadmin" (en vez de interpolar la constante
+// de Roles) para no depender de la evaluación de cadenas interpoladas
+// como constantes en atributos.
 [ApiController]
 [Route("api/usuarios")]
-[Authorize(Roles = "CEO,Director")]
+[Authorize(Roles = "Superadmin")]
 public class UsuariosController : ControllerBase
 {
     private readonly IUsuarioService _servicio;
@@ -39,5 +42,19 @@ public class UsuariosController : ControllerBase
     {
         var usuario = await _servicio.CrearUsuarioAsync(dto);
         return CreatedAtAction(nameof(ObtenerUsuario), new { id = usuario.Id }, usuario);
+    }
+
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<UsuarioDto>> ActualizarUsuario(int id, UsuarioActualizarDto dto)
+    {
+        var usuario = await _servicio.ActualizarUsuarioAsync(id, dto);
+        return usuario is null ? NotFound() : Ok(usuario);
+    }
+
+    [HttpPut("{id:int}/password")]
+    public async Task<IActionResult> CambiarPassword(int id, UsuarioCambiarPasswordDto dto)
+    {
+        var exito = await _servicio.CambiarPasswordAsync(id, dto.NuevaPassword);
+        return exito ? NoContent() : NotFound();
     }
 }

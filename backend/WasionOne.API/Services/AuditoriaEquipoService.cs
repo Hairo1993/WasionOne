@@ -30,11 +30,43 @@ public class AuditoriaEquipoService : IAuditoriaEquipoService
         ["Estado"] = "estado",
     };
 
+    // Plantilla descargable (24/sep/2026): mismo orden y mismos campos que
+    // "Columnas" de arriba (fuente de verdad para el import), con un
+    // encabezado "bonito" y un valor de ejemplo por columna. Este módulo
+    // no tiene una lista de "Columnas esperadas" en su texto de ayuda, así
+    // que los encabezados se derivaron de los nombres de propiedad en
+    // Models/AuditoriaEquipo.cs / DTOs; "Estado" usa un valor real del
+    // catálogo fijo del componente (estados = Programada/Realizada/
+    // Pendiente).
+    private static readonly IReadOnlyList<ExcelPlantillaUtils.ColumnaPlantilla> PlantillaColumnas = new List<ExcelPlantillaUtils.ColumnaPlantilla>
+    {
+        new("Folio", "AUD-0001"),
+        new("Fecha Programada", "24/09/2026"),
+        new("Fecha Realizada", "25/09/2026"),
+        new("Planta", "Planta 1"),
+        new("Área", "Sistemas"),
+        new("Almacén", "Almacén Central"),
+        new("Código de Activo", "ACT-0001"),
+        new("Descripción de Activo", "Laptop Dell Latitude"),
+        new("Responsable", "Juan Pérez"),
+        new("Tipo", "Preventiva"),
+        new("Revisados", "15"),
+        new("Estado", "Realizada"),
+    };
+
     private readonly ApplicationDbContext _contexto;
 
     public AuditoriaEquipoService(ApplicationDbContext contexto)
     {
         _contexto = contexto;
+    }
+
+    public IReadOnlyList<ExcelPlantillaUtils.ColumnaPlantilla> ObtenerColumnasPlantilla() => PlantillaColumnas;
+
+    public byte[] GenerarPlantillaExcel()
+    {
+        using var libro = ExcelPlantillaUtils.GenerarLibro("IT Auditorias", PlantillaColumnas);
+        return ExcelPlantillaUtils.GuardarComoBytes(libro);
     }
 
     public async Task<IEnumerable<AuditoriaEquipoDto>> ObtenerAuditoriasAsync(int? areaUbicacionId)
@@ -134,7 +166,7 @@ public class AuditoriaEquipoService : IAuditoriaEquipoService
         return MapearDto(auditoria);
     }
 
-    public async Task<AuditoriaEquipoImportarResultadoDto> ImportarDesdeExcelAsync(Stream archivoExcel)
+    public async Task<AuditoriaEquipoImportarResultadoDto> ImportarDesdeExcelAsync(Stream archivoExcel, IReadOnlySet<int>? plantasPermitidas)
     {
         var resultado = new AuditoriaEquipoImportarResultadoDto();
 
@@ -204,6 +236,12 @@ public class AuditoriaEquipoService : IAuditoriaEquipoService
                     $"Fila {numeroFila} (folio {folio}): la Planta '{plantaTexto}' no coincide con ninguna ubicación del catálogo de IT, se omitió.");
                 resultado.Omitidos++;
                 continue;
+            }
+            if (plantasPermitidas is not null && !plantasPermitidas.Contains(areaUbicacionId.Value))
+            {
+                resultado = new();
+                resultado.Errores.Add($"Fila {numeroFila}: la Planta de esta fila no está permitida para tu usuario en este módulo. Se rechazó el archivo completo, no se importó ningún registro.");
+                return resultado;
             }
 
             if (existentes.TryGetValue(folio, out var auditoriaExistente))

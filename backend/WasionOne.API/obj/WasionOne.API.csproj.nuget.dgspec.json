@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Development\\Projects\\WasionOne\\backend\\WasionOne.API\\WasionOne.API.csproj": {}
+    "C:\\Development\\Projects\\WasionOne\\backend\\wasionone.APi\\WasionOne.API.csproj": {}
   },
   "projects": {
-    "C:\\Development\\Projects\\WasionOne\\backend\\WasionOne.API\\WasionOne.API.csproj": {
+    "C:\\Development\\Projects\\WasionOne\\backend\\wasionone.APi\\WasionOne.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Development\\Projects\\WasionOne\\backend\\WasionOne.API\\WasionOne.API.csproj",
+        "projectUniqueName": "C:\\Development\\Projects\\WasionOne\\backend\\wasionone.APi\\WasionOne.API.csproj",
         "projectName": "WasionOne.API",
-        "projectPath": "C:\\Development\\Projects\\WasionOne\\backend\\WasionOne.API\\WasionOne.API.csproj",
+        "projectPath": "C:\\Development\\Projects\\WasionOne\\backend\\wasionone.APi\\WasionOne.API.csproj",
         "packagesPath": "C:\\Users\\IA\\.nuget\\packages\\",
-        "outputPath": "C:\\Development\\Projects\\WasionOne\\backend\\WasionOne.API\\obj\\",
+        "outputPath": "C:\\Development\\Projects\\WasionOne\\backend\\wasionone.APi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\IA\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -35,11 +35,45 @@ public class IncidenteCriticoService : IIncidenteCriticoService
         ["Estado"] = "estado",
     };
 
+    // Plantilla descargable (24/sep/2026): mismo orden y mismos campos que
+    // "Columnas" de arriba, con el encabezado "bonito" y un valor de
+    // ejemplo por columna. La sección .ayuda del componente no lista todas
+    // las columnas, así que los encabezados que faltaban ahí se derivaron
+    // del nombre de la propiedad C# correspondiente.
+    private static readonly IReadOnlyList<ExcelPlantillaUtils.ColumnaPlantilla> PlantillaColumnas = new List<ExcelPlantillaUtils.ColumnaPlantilla>
+    {
+        new("ID de Falla", "FALLA-0001"),
+        new("Fecha", "24/09/2026"),
+        new("Hora de Inicio", "08:30"),
+        new("Hora de Finalización", "10:00"),
+        new("Duración", "1.5"),
+        new("Planta", "Planta 1"),
+        new("Departamento", "Todos"),
+        new("Área", "Producción"),
+        new("Línea", "L1"),
+        new("Severidad", "Alta"),
+        new("Tipo", "Falla de red"),
+        new("Descripción", "Caída de conectividad en planta"),
+        new("Responsable", "Juan Pérez"),
+        new("Causa", "Falla de switch principal"),
+        new("Detalles", "Se reemplazó el switch dañado"),
+        new("Contramedida", "Monitoreo reforzado"),
+        new("Estado", "Abierto"),
+    };
+
     private readonly ApplicationDbContext _contexto;
 
     public IncidenteCriticoService(ApplicationDbContext contexto)
     {
         _contexto = contexto;
+    }
+
+    public IReadOnlyList<ExcelPlantillaUtils.ColumnaPlantilla> ObtenerColumnasPlantilla() => PlantillaColumnas;
+
+    public byte[] GenerarPlantillaExcel()
+    {
+        using var libro = ExcelPlantillaUtils.GenerarLibro("IT Incidentes", PlantillaColumnas);
+        return ExcelPlantillaUtils.GuardarComoBytes(libro);
     }
 
     public async Task<IEnumerable<IncidenteCriticoDto>> ObtenerIncidentesAsync(int? areaUbicacionId)
@@ -156,7 +190,7 @@ public class IncidenteCriticoService : IIncidenteCriticoService
         return MapearDto(incidente);
     }
 
-    public async Task<IncidenteCriticoImportarResultadoDto> ImportarDesdeExcelAsync(Stream archivoExcel)
+    public async Task<IncidenteCriticoImportarResultadoDto> ImportarDesdeExcelAsync(Stream archivoExcel, IReadOnlySet<int>? plantasPermitidas)
     {
         var resultado = new IncidenteCriticoImportarResultadoDto();
 
@@ -249,6 +283,12 @@ public class IncidenteCriticoService : IIncidenteCriticoService
                     $"Fila {numeroFila} (falla {idFalla}): la Planta '{plantaTexto}' no coincide con ninguna ubicación del catálogo de IT, se omitió.");
                 resultado.Omitidos++;
                 continue;
+            }
+            if (plantasPermitidas is not null && !plantasPermitidas.Contains(areaUbicacionId.Value))
+            {
+                resultado = new();
+                resultado.Errores.Add($"Fila {numeroFila}: la Planta de esta fila no está permitida para tu usuario en este módulo. Se rechazó el archivo completo, no se importó ningún registro.");
+                return resultado;
             }
 
             if (existentes.TryGetValue(idFalla, out var incidenteExistente))

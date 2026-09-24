@@ -4,6 +4,7 @@ using ClosedXML.Excel;
 using Microsoft.EntityFrameworkCore;
 using WasionOne.API.Data;
 using WasionOne.API.DTOs;
+using WasionOne.API.Helpers;
 using WasionOne.API.Interfaces;
 using WasionOne.API.Models;
 
@@ -67,11 +68,74 @@ public class TicketService : ITicketService
         ["Urgencia"] = "urgencia",
     };
 
+    // Plantilla descargable (24/sep/2026): mismo orden que "ColumnasTicket"
+    // de arriba, con el encabezado "bonito" y un valor de ejemplo por
+    // columna. Este módulo es legacy (no usa ExcelFilaLectora ni el
+    // diccionario "Columnas" estándar de los demás servicios), así que los
+    // encabezados se derivaron de "ColumnasTicket" y de las propiedades de
+    // TicketDto — NO del texto .ayuda del componente (que no lista las 39
+    // columnas). Dos encabezados preservan intencionalmente errores
+    // ortográficos que ya existen en el reporte de origen y de los que
+    // depende el matching de ColumnasTicket: "Intercciones del Agente"
+    // (falta la primera "a") y "Tiempo de Resolución (in Horas)" ("in" en
+    // vez de "en") — si se "corrigen", la plantilla descargada dejaría de
+    // reconocerse al reimportarla.
+    private static readonly IReadOnlyList<ExcelPlantillaUtils.ColumnaPlantilla> PlantillaColumnas = new List<ExcelPlantillaUtils.ColumnaPlantilla>
+    {
+        new("AnyDesk (Equipo)", "PC-00123"),
+        new("Estado de Aprobación", "Aprobado"),
+        new("Tipo de Asociación", "Incidente"),
+        new("Categoría", "Hardware"),
+        new("Hora de Cierre", "24/09/2026 16:00"),
+        new("Hora de Creación", "20/09/2026 08:15"),
+        new("Departamento", "Sistemas"),
+        new("Descripción", "No enciende el equipo de cómputo"),
+        new("ID del Ticket", "TKT-0001"),
+        new("Hora de Vencimiento", "25/09/2026 08:15"),
+        new("Tiempo de Primera Respuesta (en Horas)", "1.5"),
+        new("Estado de Primera Respuesta", "Cumplido"),
+        new("Tiempo Inicial de Respuesta", "30 min"),
+        new("Grupo", "Soporte Nivel 1"),
+        new("Impacto", "Medio"),
+        new("Interacciones del Cliente", "2"),
+        new("Elemento", "Laptop"),
+        new("Ubicación", "Planta 1"),
+        new("Intercciones del Agente", "3"),
+        new("Prioridad", "Media"),
+        new("Correo Electrónico del Solicitante", "juan.perez@wasion.com"),
+        new("Ubicación del Solicitante", "Planta 1"),
+        new("Nombre del Solicitante", "Juan Pérez"),
+        new("Solicitante VIP", "No"),
+        new("Nota de Resolución", "Se reinstaló el sistema operativo"),
+        new("Estado de Resolución", "Resuelto"),
+        new("Tiempo de Resolución (in Horas)", "4.5"),
+        new("Hora de Resolución", "24/09/2026 14:00"),
+        new("Agente", "María López"),
+        new("Origen", "Correo electrónico"),
+        new("Estado", "Abierto"),
+        new("Subcategoría", "Equipo de cómputo"),
+        new("Asunto", "Equipo no enciende"),
+        new("Resultado de Encuestas", "Satisfecho"),
+        new("Etiquetas", "hardware, urgente"),
+        new("Tipo", "Incidente"),
+        new("Registro de Tiempo", "2"),
+        new("Hora de Última Actualización", "24/09/2026 09:00"),
+        new("Urgencia", "Media"),
+    };
+
     private readonly ApplicationDbContext _contexto;
 
     public TicketService(ApplicationDbContext contexto)
     {
         _contexto = contexto;
+    }
+
+    public IReadOnlyList<ExcelPlantillaUtils.ColumnaPlantilla> ObtenerColumnasPlantilla() => PlantillaColumnas;
+
+    public byte[] GenerarPlantillaExcel()
+    {
+        using var libro = ExcelPlantillaUtils.GenerarLibro("IT Tickets", PlantillaColumnas);
+        return ExcelPlantillaUtils.GuardarComoBytes(libro);
     }
 
     public async Task<IEnumerable<TicketDto>> ObtenerTicketsAsync(int? areaUbicacionId)
@@ -251,7 +315,7 @@ public class TicketService : ITicketService
         return MapearDto(ticket);
     }
 
-    public async Task<TicketImportarResultadoDto> ImportarDesdeExcelAsync(Stream archivoExcel)
+    public async Task<TicketImportarResultadoDto> ImportarDesdeExcelAsync(Stream archivoExcel, IReadOnlySet<int>? plantasPermitidas)
     {
         var resultado = new TicketImportarResultadoDto();
 
@@ -435,6 +499,12 @@ public class TicketService : ITicketService
                     $"Fila {numeroFila} (ticket {idOrigen}): la Ubicación '{ubicacionTexto}' no coincide con ninguna ubicación del catálogo de IT, se omitió.");
                 resultado.Omitidos++;
                 continue;
+            }
+            if (plantasPermitidas is not null && !plantasPermitidas.Contains(areaUbicacionId.Value))
+            {
+                resultado = new();
+                resultado.Errores.Add($"Fila {numeroFila}: la Planta de esta fila no está permitida para tu usuario en este módulo. Se rechazó el archivo completo, no se importó ningún registro.");
+                return resultado;
             }
 
             if (existentes.TryGetValue(idOrigen, out var ticketExistente))

@@ -27,11 +27,35 @@ public class RespaldoService : IRespaldoService
         ["Observaciones"] = "observaciones",
     };
 
+    // Plantilla descargable (24/sep/2026): mismo orden y mismos campos que
+    // "Columnas" de arriba, con el encabezado "bonito" y un valor de
+    // ejemplo por columna.
+    private static readonly IReadOnlyList<ExcelPlantillaUtils.ColumnaPlantilla> PlantillaColumnas = new List<ExcelPlantillaUtils.ColumnaPlantilla>
+    {
+        new("ID", "RESP-0001"),
+        new("Fecha de Respaldo", "24/09/2026"),
+        new("Sistema / Aplicación", "ERP SAP"),
+        new("Software Utilizado", "Veeam"),
+        new("Tipo de Respaldo", "Completo"),
+        new("Ubicación del Respaldo", "Planta 1"),
+        new("Responsable", "Carlos Ruiz"),
+        new("Estado", "Completado"),
+        new("Observaciones", "Respaldo verificado correctamente"),
+    };
+
     private readonly ApplicationDbContext _contexto;
 
     public RespaldoService(ApplicationDbContext contexto)
     {
         _contexto = contexto;
+    }
+
+    public IReadOnlyList<ExcelPlantillaUtils.ColumnaPlantilla> ObtenerColumnasPlantilla() => PlantillaColumnas;
+
+    public byte[] GenerarPlantillaExcel()
+    {
+        using var libro = ExcelPlantillaUtils.GenerarLibro("IT Respaldos", PlantillaColumnas);
+        return ExcelPlantillaUtils.GuardarComoBytes(libro);
     }
 
     public async Task<IEnumerable<RespaldoDto>> ObtenerRespaldosAsync(int? areaUbicacionId)
@@ -120,7 +144,7 @@ public class RespaldoService : IRespaldoService
         return MapearDto(respaldo);
     }
 
-    public async Task<RespaldoImportarResultadoDto> ImportarDesdeExcelAsync(Stream archivoExcel)
+    public async Task<RespaldoImportarResultadoDto> ImportarDesdeExcelAsync(Stream archivoExcel, IReadOnlySet<int>? plantasPermitidas)
     {
         var resultado = new RespaldoImportarResultadoDto();
 
@@ -187,6 +211,12 @@ public class RespaldoService : IRespaldoService
                     $"Fila {numeroFila} (id {idOrigen}): la Ubicación del Respaldo '{ubicacionTexto}' no coincide con ninguna ubicación del catálogo de IT, se omitió.");
                 resultado.Omitidos++;
                 continue;
+            }
+            if (plantasPermitidas is not null && !plantasPermitidas.Contains(areaUbicacionId.Value))
+            {
+                resultado = new();
+                resultado.Errores.Add($"Fila {numeroFila}: la Planta de esta fila no está permitida para tu usuario en este módulo. Se rechazó el archivo completo, no se importó ningún registro.");
+                return resultado;
             }
 
             if (existentes.TryGetValue(idOrigen, out var respaldoExistente))

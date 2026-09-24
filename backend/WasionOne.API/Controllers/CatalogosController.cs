@@ -5,6 +5,10 @@ using WasionOne.API.Interfaces;
 
 namespace WasionOne.API.Controllers;
 
+// Lectura de catálogos: abierta a cualquier usuario autenticado (se usa en
+// selectores por toda la aplicación). Altas/ediciones/bajas: restringidas a
+// Superadmin (mismo criterio que UsuariosController; desde el 19/sep/2026
+// CEO y Director ya no tienen esta capacidad).
 [ApiController]
 [Route("api/catalogos")]
 [Authorize]
@@ -33,10 +37,32 @@ public class CatalogosController : ControllerBase
     }
 
     [HttpPost("direcciones")]
+    [Authorize(Roles = "Superadmin")]
     public async Task<ActionResult<DireccionDto>> CrearDireccion(DireccionCrearDto dto)
     {
         var direccion = await _servicio.CrearDireccionAsync(dto);
         return CreatedAtAction(nameof(ObtenerDireccion), new { id = direccion.Id }, direccion);
+    }
+
+    [HttpPut("direcciones/{id:int}")]
+    [Authorize(Roles = "Superadmin")]
+    public async Task<ActionResult<DireccionDto>> ActualizarDireccion(int id, DireccionActualizarDto dto)
+    {
+        var direccion = await _servicio.ActualizarDireccionAsync(id, dto);
+        return direccion is null ? NotFound() : Ok(direccion);
+    }
+
+    [HttpDelete("direcciones/{id:int}")]
+    [Authorize(Roles = "Superadmin")]
+    public async Task<IActionResult> EliminarDireccion(int id)
+    {
+        var resultado = await _servicio.EliminarDireccionAsync(id);
+        if (resultado.Exito)
+        {
+            return NoContent();
+        }
+
+        return resultado.Error is null ? NotFound() : Conflict(resultado.Error);
     }
 
     // --- Departamentos ---
@@ -55,10 +81,32 @@ public class CatalogosController : ControllerBase
     }
 
     [HttpPost("departamentos")]
+    [Authorize(Roles = "Superadmin")]
     public async Task<ActionResult<DepartamentoDto>> CrearDepartamento(DepartamentoCrearDto dto)
     {
         var departamento = await _servicio.CrearDepartamentoAsync(dto);
         return CreatedAtAction(nameof(ObtenerDepartamento), new { id = departamento.Id }, departamento);
+    }
+
+    [HttpPut("departamentos/{id:int}")]
+    [Authorize(Roles = "Superadmin")]
+    public async Task<ActionResult<DepartamentoDto>> ActualizarDepartamento(int id, DepartamentoActualizarDto dto)
+    {
+        var departamento = await _servicio.ActualizarDepartamentoAsync(id, dto);
+        return departamento is null ? NotFound() : Ok(departamento);
+    }
+
+    [HttpDelete("departamentos/{id:int}")]
+    [Authorize(Roles = "Superadmin")]
+    public async Task<IActionResult> EliminarDepartamento(int id)
+    {
+        var resultado = await _servicio.EliminarDepartamentoAsync(id);
+        if (resultado.Exito)
+        {
+            return NoContent();
+        }
+
+        return resultado.Error is null ? NotFound() : Conflict(resultado.Error);
     }
 
     // --- Areas ---
@@ -77,10 +125,32 @@ public class CatalogosController : ControllerBase
     }
 
     [HttpPost("areas")]
+    [Authorize(Roles = "Superadmin")]
     public async Task<ActionResult<AreaDto>> CrearArea(AreaCrearDto dto)
     {
         var area = await _servicio.CrearAreaAsync(dto);
         return CreatedAtAction(nameof(ObtenerArea), new { id = area.Id }, area);
+    }
+
+    [HttpPut("areas/{id:int}")]
+    [Authorize(Roles = "Superadmin")]
+    public async Task<ActionResult<AreaDto>> ActualizarArea(int id, AreaActualizarDto dto)
+    {
+        var area = await _servicio.ActualizarAreaAsync(id, dto);
+        return area is null ? NotFound() : Ok(area);
+    }
+
+    [HttpDelete("areas/{id:int}")]
+    [Authorize(Roles = "Superadmin")]
+    public async Task<IActionResult> EliminarArea(int id)
+    {
+        var resultado = await _servicio.EliminarAreaAsync(id);
+        if (resultado.Exito)
+        {
+            return NoContent();
+        }
+
+        return resultado.Error is null ? NotFound() : Conflict(resultado.Error);
     }
 
     // --- Ubicaciones ---
@@ -99,10 +169,32 @@ public class CatalogosController : ControllerBase
     }
 
     [HttpPost("ubicaciones")]
+    [Authorize(Roles = "Superadmin")]
     public async Task<ActionResult<UbicacionDto>> CrearUbicacion(UbicacionCrearDto dto)
     {
         var ubicacion = await _servicio.CrearUbicacionAsync(dto);
         return CreatedAtAction(nameof(ObtenerUbicacion), new { id = ubicacion.Id }, ubicacion);
+    }
+
+    [HttpPut("ubicaciones/{id:int}")]
+    [Authorize(Roles = "Superadmin")]
+    public async Task<ActionResult<UbicacionDto>> ActualizarUbicacion(int id, UbicacionActualizarDto dto)
+    {
+        var ubicacion = await _servicio.ActualizarUbicacionAsync(id, dto);
+        return ubicacion is null ? NotFound() : Ok(ubicacion);
+    }
+
+    [HttpDelete("ubicaciones/{id:int}")]
+    [Authorize(Roles = "Superadmin")]
+    public async Task<IActionResult> EliminarUbicacion(int id)
+    {
+        var resultado = await _servicio.EliminarUbicacionAsync(id);
+        if (resultado.Exito)
+        {
+            return NoContent();
+        }
+
+        return resultado.Error is null ? NotFound() : Conflict(resultado.Error);
     }
 
     // --- Área x Ubicación (nodo operativo) ---
@@ -114,9 +206,31 @@ public class CatalogosController : ControllerBase
     }
 
     [HttpPost("area-ubicaciones")]
+    [Authorize(Roles = "Superadmin")]
     public async Task<ActionResult<AreaUbicacionDto>> CrearAreaUbicacion(AreaUbicacionCrearDto dto)
     {
         var nodo = await _servicio.CrearAreaUbicacionAsync(dto);
         return Ok(nodo);
+    }
+
+    [HttpDelete("area-ubicaciones/{id:int}")]
+    [Authorize(Roles = "Superadmin")]
+    public async Task<IActionResult> EliminarAreaUbicacion(int id)
+    {
+        var resultado = await _servicio.EliminarAreaUbicacionAsync(id);
+        if (resultado.Exito)
+        {
+            return NoContent();
+        }
+
+        return resultado.Error is null ? NotFound() : Conflict(resultado.Error);
+    }
+
+    // --- Módulos (catálogo fijo de pantallas de captura) ---
+
+    [HttpGet("modulos")]
+    public async Task<ActionResult<IEnumerable<ModuloDto>>> ObtenerModulos()
+    {
+        return Ok(await _servicio.ObtenerModulosAsync());
     }
 }

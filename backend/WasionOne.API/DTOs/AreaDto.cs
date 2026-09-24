@@ -12,3 +12,9 @@ public class AreaCrearDto
     public string Nombre { get; set; } = string.Empty;
     public int DepartamentoId { get; set; }
 }
+
+public class AreaActualizarDto
+{
+    public string Nombre { get; set; } = string.Empty;
+    public int DepartamentoId { get; set; }
+}

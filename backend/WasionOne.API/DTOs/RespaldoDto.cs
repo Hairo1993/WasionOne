@@ -32,7 +32,7 @@ public class RespaldoActualizarDto
     public string? Observaciones { get; set; }
 }
 
-public class RespaldoImportarResultadoDto
+public class RespaldoImportarResultadoDto : IResultadoImportacion
 {
     public int TotalFilas { get; set; }
     public int Creados { get; set; }

@@ -12,4 +12,12 @@ public interface IUsuarioContexto
     int? DireccionId { get; }
     int? DepartamentoId { get; }
     int? AreaId { get; }
+    IEnumerable<string> Modulos { get; }
+
+    // Nivel de captura por Planta dentro de cada módulo (20/sep/2026): un
+    // par (ModuloClave, AreaUbicacionId) por cada Planta a la que el
+    // usuario está restringido en ese módulo. Un módulo que no aparece
+    // aquí en ningún par = todas las Plantas del Área (sin restricción).
+    // Ver AutorizacionModuloHelper para cómo se consulta en la práctica.
+    IEnumerable<(string ModuloClave, int AreaUbicacionId)> ModuloPlantas { get; }
 }

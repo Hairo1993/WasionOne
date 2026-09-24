@@ -37,14 +37,56 @@ public class AuthService : IAuthService
         }
 
         var roles = new[] { usuario.Rol };
-        var token = GenerarToken(usuario.NombreUsuario, roles, usuario.DireccionId, usuario.DepartamentoId, usuario.AreaId);
+        var modulos = await _contexto.UsuarioModulos
+            .AsNoTracking()
+            .Where(m => m.UsuarioId == usuario.Id)
+            .Select(m => m.ModuloClave)
+            .ToListAsync();
+
+        var moduloPlantas = await _contexto.UsuarioModuloUbicaciones
+            .AsNoTracking()
+            .Where(m => m.UsuarioId == usuario.Id)
+            .Select(m => new ModuloUbicacionAsignadaDto { ModuloClave = m.ModuloClave, AreaUbicacionId = m.AreaUbicacionId })
+            .ToListAsync();
+
+        var token = GenerarToken(usuario.NombreUsuario, roles, usuario.DireccionId, usuario.DepartamentoId, usuario.AreaId, modulos, moduloPlantas);
 
         return new LoginRespuestaDto
         {
             Token = token,
             NombreUsuario = usuario.NombreUsuario,
+            NombreCompleto = usuario.NombreCompleto,
             Roles = roles,
+            DireccionId = usuario.DireccionId,
+            DepartamentoId = usuario.DepartamentoId,
+            AreaId = usuario.AreaId,
+            Modulos = modulos,
+            ModuloPlantas = moduloPlantas,
         };
+    }
+
+    public async Task<ResultadoOperacionDto> CambiarMiPasswordAsync(string nombreUsuario, string passwordActual, string passwordNueva)
+    {
+        if (string.IsNullOrWhiteSpace(passwordNueva) || passwordNueva.Length < 6)
+        {
+            return new ResultadoOperacionDto { Exito = false, Error = "La contraseña nueva debe tener al menos 6 caracteres." };
+        }
+
+        var usuario = await _contexto.Usuarios.FirstOrDefaultAsync(u => u.NombreUsuario == nombreUsuario && u.Activo);
+        if (usuario is null)
+        {
+            return new ResultadoOperacionDto { Exito = false, Error = "Usuario no encontrado." };
+        }
+
+        if (!PasswordHasher.Verificar(passwordActual, usuario.PasswordHash))
+        {
+            return new ResultadoOperacionDto { Exito = false, Error = "La contraseña actual no es correcta." };
+        }
+
+        usuario.PasswordHash = PasswordHasher.Hash(passwordNueva);
+        await _contexto.SaveChangesAsync();
+
+        return new ResultadoOperacionDto { Exito = true };
     }
 
     private string GenerarToken(
@@ -52,7 +94,9 @@ public class AuthService : IAuthService
         IEnumerable<string> roles,
         int? direccionId,
         int? departamentoId,
-        int? areaId)
+        int? areaId,
+        IEnumerable<string> modulos,
+        IEnumerable<ModuloUbicacionAsignadaDto> moduloPlantas)
     {
         var jwtConfig = _configuracion.GetSection("Jwt");
         var claveSecreta = jwtConfig["ClaveSecreta"]!;
@@ -65,6 +109,8 @@ public class AuthService : IAuthService
         };
         claims.AddRange(roles.Select(rol => new Claim(ClaimTypes.Role, rol)));
 
+        // Solo se agrega el claim de jerarquía cuando aplica al rol del
+        // usuario (un CEO, por ejemplo, no tiene ninguno de los tres).
         if (direccionId.HasValue)
         {
             claims.Add(new Claim("direccionId", direccionId.Value.ToString()));
@@ -79,6 +125,14 @@ public class AuthService : IAuthService
         {
             claims.Add(new Claim("areaId", areaId.Value.ToString()));
         }
+
+        claims.AddRange(modulos.Select(modulo => new Claim("modulo", modulo)));
+
+        // Nivel de captura por Planta (20/sep/2026): un claim por cada
+        // combinación Módulo+Planta a la que el usuario está restringido.
+        // Un módulo sin ningún claim "moduloPlanta" = todas las Plantas
+        // del Área (ver AutorizacionModuloHelper).
+        claims.AddRange(moduloPlantas.Select(mp => new Claim("moduloPlanta", $"{mp.ModuloClave}:{mp.AreaUbicacionId}")));
 
         var credencialesFirma = new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(claveSecreta)),
